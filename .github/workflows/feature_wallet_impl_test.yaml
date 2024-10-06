@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      GIT_REPO_URL: https://github.com/gideonGig/wallet.git
+      GIT_REPO_URL: gideonGig/wallet
       DOCKER_IMAGE: gideongig/wallet
       KUBE_DEPLOYMENT: your-k8s-deployment
       KUBE_NAMESPACE: default  # Adjust the namespace if needed
