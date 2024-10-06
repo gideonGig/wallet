@@ -8,7 +8,7 @@ WORKDIR /app
 COPY /target/exercise-wallet-0.0.2.jar exercise-wallet-0.0.2.jar
 
 # Expose port 8080 for the application
-EXPOSE 8080
+EXPOSE 8090
 
 # Command to run the Java application
 CMD ["java", "-jar", "exercise-wallet-0.0.2.jar"]
