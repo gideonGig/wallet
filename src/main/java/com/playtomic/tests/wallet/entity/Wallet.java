@@ -12,6 +12,7 @@ import lombok.Setter;
 
 import java.util.UUID;
 
+@SuppressWarnings("ALL")
 @Getter
 @Setter
 @Entity

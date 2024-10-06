@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class WalletName implements Serializable {
-   private String walletName;
+    private String walletName;
+
     public WalletName(String walletName) {
         this.walletName = walletName;
     }

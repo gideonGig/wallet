@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class WalletTopUpRequestDomainMessagePublisherImpl implements  WalletTopRequestMessagePublisher {
+public class WalletTopUpRequestDomainMessagePublisherImpl implements WalletTopRequestMessagePublisher {
     @Override
     public void publish(WalletTopUpEvent domainEvent) {
         /**

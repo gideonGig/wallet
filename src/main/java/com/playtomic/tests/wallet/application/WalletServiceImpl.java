@@ -17,7 +17,6 @@ import java.util.UUID;
 public class WalletServiceImpl implements WalletService {
     private final WalletTopUpCommandHandler walletTopUpCommandHandler;
     private final WalletCreateCommandHandler walletCreateCommandHandler;
-
     private final WalletQueryService walletQueryService;
 
     public WalletServiceImpl (WalletTopUpCommandHandler walletTopUpCommandHandler,
