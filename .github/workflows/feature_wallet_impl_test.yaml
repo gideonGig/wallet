@@ -1,0 +1,62 @@
+name: CI/CD Pipeline Testing
+
+on:
+  push:
+    branches:
+      - feature/wallet-implementation-test
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      GIT_REPO_URL: https://github.com/gideonGig/wallet.git
+      DOCKER_IMAGE: gideongig/wallet
+      KUBE_DEPLOYMENT: your-k8s-deployment
+      KUBE_NAMESPACE: default  # Adjust the namespace if needed
+      REGISTRY_USER: ${{ secrets.REGISTRY_USER }}  # Store in GitHub Secrets
+      REGISTRY_PASS: ${{ secrets.REGISTRY_PASS }}  # Store in GitHub Secrets
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ env.GIT_REPO_URL }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build Docker Image
+        run: |
+          echo "Building the Docker image..."
+          DOCKER_TAG=$(git rev-parse --short HEAD)
+          docker build -t $DOCKER_IMAGE:$DOCKER_TAG -t $DOCKER_IMAGE:latest .
+
+      - name: Run Tests
+        run: |
+          echo "Running tests..."
+          ./../../run-tests.sh
+        continue-on-error: false
+
+      - name: Log in to Docker Registry
+        run: |
+          echo "$REGISTRY_PASS" | docker login -u "$REGISTRY_USER" --password-stdin
+
+      - name: Push Docker Image
+        run: |
+          DOCKER_TAG=$(git rev-parse --short HEAD)
+          echo "Pushing the Docker image to the registry..."
+          docker push $DOCKER_IMAGE:$DOCKER_TAG
+          docker push $DOCKER_IMAGE:latest
+
+#      - name: Set up Kubectl
+#        uses: azure/k8s-set-context@v2
+#        with:
+#          method: kubeconfig
+#          kubeconfig: ${{ secrets.KUBECONFIG }}  # Ensure kubeconfig is stored in GitHub Secrets
+#
+#      - name: Deploy to Kubernetes
+#        run: |
+#          echo "Deploying to Kubernetes..."
+#          kubectl set image deployment/$KUBE_DEPLOYMENT your-app-container=$DOCKER_IMAGE:latest --namespace=$KUBE_NAMESPACE --record
+#          kubectl rollout status deployment/$KUBE_DEPLOYMENT --namespace=$KUBE_NAMESPACE*/
