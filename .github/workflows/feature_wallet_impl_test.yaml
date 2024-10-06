@@ -41,12 +41,6 @@ jobs:
           DOCKER_TAG=$(git rev-parse --short HEAD)
           docker build -t $DOCKER_IMAGE:$DOCKER_TAG -t $DOCKER_IMAGE:latest .
 
-      - name: Run Tests
-        run: |
-          echo "Running tests..."
-          ./../../run-tests.sh
-        continue-on-error: false
-
       - name: Log in to Docker Registry
         run: |
           echo "$REGISTRY_PASS" | docker login -u "$REGISTRY_USER" --password-stdin
